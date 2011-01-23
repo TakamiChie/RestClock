@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout android:layout_height="fill_parent"
+		android:orientation="vertical" android:id="@+id/LinearLayout01"
+		android:layout_weight="1" android:layout_width="fill_parent" android:layout_marginTop="20dp" android:layout_marginBottom="20dp">
+		<TextView android:textSize="40dp" android:text="@+id/TextView01"
+			android:gravity="bottom|center" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:id="@+id/label_time"></TextView>
+		<TextView android:textSize="24dp" android:text="@+id/TextView01"
+			android:gravity="top|center_horizontal" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:id="@+id/label_day"></TextView>
+
+
+
+
+		<TableLayout android:layout_width="fill_parent"
+			android:id="@+id/table_calender" android:layout_height="fill_parent">
+			<TableRow android:id="@+id/tr_weeks" android:layout_width="fill_parent"
+				android:layout_weight="1" android:layout_height="fill_parent">
+				
+			</TableRow>
+			
+			<TableRow android:id="@+id/tr_week2" android:layout_width="fill_parent"
+				android:layout_weight="1" android:layout_height="fill_parent">
+				
+			
+
+</TableRow>
+			<TableRow android:id="@+id/tr_week3" android:layout_width="fill_parent"
+				android:layout_weight="1" android:layout_height="fill_parent">
+				
+			<TableRow android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/tr_week1" android:layout_width="fill_parent"></TableRow>
+</TableRow>
+			<TableRow android:id="@+id/tr_week4" android:layout_width="fill_parent"
+				android:layout_weight="1" android:layout_height="fill_parent">
+				
+			
+</TableRow>
+			<TableRow android:id="@+id/tr_week5" android:layout_width="fill_parent"
+				android:layout_weight="1" android:layout_height="fill_parent">
+				
+			</TableRow>
+			<TableRow android:id="@+id/tr_week6" android:layout_width="fill_parent"
+				android:layout_weight="1" android:layout_height="fill_parent">
+				
+			</TableRow>
+		</TableLayout>
+
+	</LinearLayout>
+	<LinearLayout android:layout_height="fill_parent"
+		android:id="@+id/LinearLayout02" android:layout_weight="1" android:layout_width="fill_parent" android:layout_marginTop="10dp" android:layout_marginBottom="10dp">
+		<WebView android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/webView"></WebView>
+
+	</LinearLayout>
+</LinearLayout>
