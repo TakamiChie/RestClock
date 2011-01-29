@@ -12,12 +12,9 @@
 			</intent-filter>
 		</activity>
 
-		<receiver android:name="DockReciever">
-			<intent-filter>
-				<action android:name="android.intent.action.BATTERY_CHANGED"></action>
-			</intent-filter>
-		</receiver>
-	</application>
+		
+	<service android:label="ケーブル接続を監視するサービスです。" android:name="RestClockService"></service>
+</application>
 	<uses-sdk android:minSdkVersion="7" />
 
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>

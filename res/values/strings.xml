@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="wording_connecter_join_details">%sを起動する場合タップします。</string>
+    <string name="wording_connecter_join">ケーブルが接続されました</string>
+    <string name="yes">はい</string>
 	<string name="wording_message_connecter_join">%sを起動しますか？</string>
 	<string name="wording_title_connecter_join">コネクタが接続されました</string>
 	<string name="app_name">RestClock</string>

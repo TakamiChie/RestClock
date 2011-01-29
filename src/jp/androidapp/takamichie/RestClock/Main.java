@@ -6,24 +6,26 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import jp.androidapp.takamichie.RestClock.util.Util;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
+import android.widget.TextView;
 
 public class Main extends Activity {
   Timer tickTimer;
 
   static int holidayColor = Color.RED;
   static int subHolidayColor = Color.BLUE;
+  static int todayColor = Color.YELLOW;
   static int reloadCountMAX = 10;
   SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd EEE");
@@ -32,12 +34,19 @@ public class Main extends Activity {
   String webSite;
 
   /** Called when the activity is first created. */
-  @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.main);
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
     Log.d("DockClock", "Prepare");
+    if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean(Util.FROM_NOTIFICATION, false))
+    {
+      Util.setNotification(this);
+    }
 
     // カレンダーテーブルの作成
     TableRow.LayoutParams params = new TableRow.LayoutParams();
@@ -75,33 +84,18 @@ public class Main extends Activity {
   }
 
   @Override
-  protected void onResume() {
-    super.onResume();
-    WebView webView = (WebView) findViewById(R.id.webView);
-    webView.loadUrl("http://favstar.fm/users/TakamiChie/recent");
-    reloadCount = reloadCountMAX;
-    tickTimer = new Timer(false);
-    tickTimer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        Handler h = new Handler(Main.this.getMainLooper());
-        h.post(new Runnable() {
-          @Override
-          public void run() {
-            updateTime();
-            reloadCount--;
-            if (reloadCount <= 0) {
-              WebView webView = (WebView) findViewById(R.id.webView);
-              webView.reload();
-              reloadCount = reloadCountMAX;
-            }
-          }
-        });
-      }
-    }, 0, 1000);
+  protected void onStart() {
+    super.onStart();
+    Util.runningService(this);
   }
 
-  @Override
+  protected void onResume() {
+    super.onResume();
+    reloadCount = reloadCountMAX;
+    tickTimer = new Timer(false);
+    tickTimer.schedule(new Timer_Tick(), 0, 1000);
+  }
+
   protected void onPause() {
     super.onPause();
     tickTimer.cancel();
@@ -113,6 +107,8 @@ public class Main extends Activity {
     TextView label_day = (TextView) findViewById(R.id.label_day);
     Date now = new Date();
     label_time.setText(timeFormat.format(now));
+
+    // 日付が変わっていたら、カレンダー等も更新
     if (lastDay == null || lastDay.getDate() != now.getDate()) {
       Log.d("DockClock", "RefreshDate");
       label_day.setText(dateFormat.format(now));
@@ -139,9 +135,29 @@ public class Main extends Activity {
         if (day > 0) {
           TextView label = (TextView) row.getChildAt(c);
           label.setText(String.valueOf(day));
+          if(day == now.getDate())
+          {
+            label.setBackgroundColor(todayColor);
+          }
         }
         day++;
       }
     }
   }
+
+  private final class Timer_Tick extends TimerTask {
+    public void run() {
+      Handler h = new Handler(Main.this.getMainLooper());
+      h.post(new Runnable() {
+        public void run() {
+          updateTime();
+          reloadCount--;
+          if (reloadCount <= 0) {
+            reloadCount = reloadCountMAX;
+          }
+        }
+      });
+    }
+  }
+
 }
